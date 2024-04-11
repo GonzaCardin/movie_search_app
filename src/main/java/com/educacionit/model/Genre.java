@@ -1,13 +1,13 @@
 package com.educacionit.model;
 
-public class Genres {
+public class Genre {
     private int id;
     private String name;
-    public Genres(int id, String name) {
+    public Genre(int id, String name) {
         this.id = id;
         this.name = name;
     }
-    public Genres(String name) {
+    public Genre(String name) {
         this.name = name;
     }
     public int getId() {

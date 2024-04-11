@@ -3,13 +3,13 @@ package com.educacionit.model;
 import java.util.List;
 
 public class Movie {
-    private Integer id;
+    private String id;
     private String name;
     private String officialSiteUrl;
     private String imageUrl;
-    private List<Genres> genres;
+    private List<Genre> genres;
 
-    public Movie(Integer id, String name, String officialSiteUrl, String imageUrl, List<Genres> genres) {
+    public Movie(String id, String name, String officialSiteUrl, String imageUrl, List<Genre> genres) {
         this.id = id;
         this.name = name;
         this.officialSiteUrl = officialSiteUrl;
@@ -17,18 +17,18 @@ public class Movie {
         this.genres = genres;
     }
 
-    public Movie(String name, String officialSiteUrl, String imageUrl, List<Genres> genres) {
+    public Movie(String name, String officialSiteUrl, String imageUrl, List<Genre> genres) {
         this.name = name;
         this.officialSiteUrl = officialSiteUrl;
         this.imageUrl = imageUrl;
         this.genres = genres;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -56,11 +56,11 @@ public class Movie {
         this.imageUrl = imageUrl;
     }
 
-    public List<Genres> getGenres() {
+    public List<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<Genres> genres) {
+    public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
 
