@@ -2,9 +2,10 @@ package com.educacionit.dao.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public interface ConnectionDB {
-    default Connection getConnection(){
+    default Connection getConnection() throws SQLException{
 
         try {
             final String URL = "jdbc:mysql://localhost/films";
@@ -15,8 +16,7 @@ public interface ConnectionDB {
             
         return conn;
         } catch (Exception e) {
-            
+            throw new SQLException(e.getMessage(), e);
         }
-        return null;
     }
 }
