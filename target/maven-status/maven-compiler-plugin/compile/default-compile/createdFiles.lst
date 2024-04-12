@@ -1,0 +1,13 @@
+com\educacionit\dao\database\ConnectionDB.class
+com\educacionit\dao\impl\GenreDAOImpl.class
+com\educacionit\dao\model\MovieDAO.class
+com\educacionit\dao\model\GenreDAO.class
+com\educacionit\service\MovieService.class
+com\educacionit\dao\impl\MovieDAOImpl.class
+com\educacionit\service\MovieServiceImpl.class
+com\educacionit\model\Genre.class
+com\educacionit\exceptions\DBException.class
+com\educacionit\main\MainMenu.class
+com\educacionit\exceptions\GenreException.class
+com\educacionit\exceptions\MovieException.class
+com\educacionit\model\Movie.class
