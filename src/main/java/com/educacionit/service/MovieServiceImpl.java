@@ -7,48 +7,52 @@ import com.educacionit.dao.impl.GenreDAOImpl;
 import com.educacionit.dao.impl.MovieDAOImpl;
 import com.educacionit.dao.model.GenreDAO;
 import com.educacionit.dao.model.MovieDAO;
+import com.educacionit.exceptions.DBException;
+import com.educacionit.exceptions.GenreException;
+import com.educacionit.exceptions.MovieException;
 import com.educacionit.model.Movie;
 
 public class MovieServiceImpl implements MovieService {
     private MovieDAO movieDAO = new MovieDAOImpl();
     private GenreDAO genreDAO = new GenreDAOImpl();
+
     @Override
-    public Movie searchMovieById(String id) throws SQLException {
-       return movieDAO.searchById(id);
+    public Movie searchMovieById(String id) throws SQLException, DBException, MovieException {
+        return movieDAO.searchById(id);
     }
 
     @Override
-    public List<Movie> searchAllMovies() {
+    public List<Movie> searchAllMovies() throws DBException, MovieException {
         return movieDAO.searchAll();
     }
 
     @Override
-    public String addMovie(Movie newMovie) {
+    public String addMovie(Movie newMovie) throws DBException, MovieException {
         return movieDAO.save(newMovie);
     }
 
     @Override
-    public void updateMovie(Movie movie) {
+    public void updateMovie(Movie movie) throws DBException, MovieException {
         movieDAO.update(movie);
     }
 
     @Override
-    public void deleteMovie(String id) {
+    public void deleteMovie(String id) throws DBException, MovieException {
         movieDAO.delete(id);
     }
 
     @Override
-    public List<String> getGenresByMovieId(String movieId) {
+    public List<String> getGenresByMovieId(String movieId) throws DBException, GenreException {
         return genreDAO.getGenresByIdMovie(movieId);
     }
 
     @Override
-    public void addGenreToMovie(String movieId, String genre) {
+    public void addGenreToMovie(String movieId, String genre) throws DBException, MovieException {
         genreDAO.addGenre(movieId, genre);
     }
 
     @Override
-    public void deleteGenreByMovieId(String movidId) {
+    public void deleteGenreByMovieId(String movidId) throws DBException, MovieException {
         genreDAO.addGenre(movidId, movidId);
     }
 

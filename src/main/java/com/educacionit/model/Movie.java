@@ -24,7 +24,8 @@ public class Movie {
         this.genres = genres;
     }
 
-    public Movie() {}
+    public Movie() {
+    }
 
     public String getId() {
         return id;
