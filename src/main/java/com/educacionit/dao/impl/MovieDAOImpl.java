@@ -104,7 +104,7 @@ public class MovieDAOImpl implements MovieDAO, ConnectionDB {
             m_statement.setString(4, newMovie.getImageUrl());
             m_statement.executeUpdate();
 
-            String genreQuery = "INSERT INTO genres (movie_id,genre)";
+            String genreQuery = "INSERT INTO genres (movie_id,genre) VALUES (?,?)";
             PreparedStatement g_statement = conn.prepareStatement(genreQuery);
 
             for (Genre genre : newMovie.getGenres()) {
@@ -174,5 +174,33 @@ public class MovieDAOImpl implements MovieDAO, ConnectionDB {
             closeConnection(conn);
         }
     }
+
+    @Override
+    public List<Movie> searchByGenre(String genre) throws DBException, MovieException {
+        conn = null;
+        List<Movie> moviesByGenre = new ArrayList<>();
+        try {
+            conn = getConnection();
+            String searchByGenreQuery = "SELECT m.id, m.title, m.siteUrl, m.imageUrl FROM movies m INNER JOIN genres g ON m.id = g.movie_id WHERE g.genre = ?";
+            PreparedStatement search_g_statement = conn.prepareStatement(searchByGenreQuery);
+            ResultSet rs = search_g_statement.executeQuery();
+
+            while (rs.next()) {
+                Movie m = new Movie();
+                m.setId(rs.getString("id"));
+                m.setName(rs.getString("title"));
+                m.setOfficialSiteUrl(rs.getString("siteUrl"));
+                m.setImageUrl(rs.getString("imageUrl"));
+                moviesByGenre.add(m);
+            }
+
+            return moviesByGenre;
+        } catch (SQLException e) {
+            throw new MovieException(null);
+        }finally{
+            closeConnection(conn);
+        }
+    }
+    
 
 }

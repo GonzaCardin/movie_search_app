@@ -19,6 +19,8 @@ public interface MovieService {
 
     void deleteMovie(String id) throws DBException, MovieException;
 
+    List<Movie> searchMoviesByGenre(String genre) throws DBException,MovieException;
+
     List<String> getGenresByMovieId(String movieId) throws DBException, GenreException;
 
     void addGenreToMovie(String movieId, String genre) throws DBException, MovieException;

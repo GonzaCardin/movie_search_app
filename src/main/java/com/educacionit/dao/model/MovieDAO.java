@@ -17,4 +17,6 @@ public interface MovieDAO {
     public void update(Movie movie) throws DBException, MovieException;
 
     public void delete(String id) throws DBException, MovieException;
+
+    List<Movie> searchByGenre(String genre) throws DBException, MovieException;
 }

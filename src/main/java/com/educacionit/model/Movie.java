@@ -17,13 +17,6 @@ public class Movie {
         this.genres = genres;
     }
 
-    public Movie(String name, String officialSiteUrl, String imageUrl, List<Genre> genres) {
-        this.name = name;
-        this.officialSiteUrl = officialSiteUrl;
-        this.imageUrl = imageUrl;
-        this.genres = genres;
-    }
-
     public Movie() {
     }
 

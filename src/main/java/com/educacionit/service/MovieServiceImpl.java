@@ -56,4 +56,10 @@ public class MovieServiceImpl implements MovieService {
         genreDAO.addGenre(movidId, movidId);
     }
 
+    @Override
+    public List<Movie> searchMoviesByGenre(String genre) throws DBException, MovieException {
+        return movieDAO.searchByGenre(genre);
+    }
+    
+
 }
