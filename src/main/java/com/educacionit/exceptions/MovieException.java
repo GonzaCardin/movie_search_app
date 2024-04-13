@@ -7,6 +7,8 @@ public class MovieException extends Exception {
     public static final int ERROR_3 = 3; // Error: Save
     public static final int ERROR_4 = 4; // Error: Update
     public static final int ERROR_5 = 5; // Error: Delete
+    public static final int ERROR_6 = 6; // Error: Search by Genre
+    public static final int ERROR_7 = 7; // Error: Search by Title
 
     public MovieException(Integer errorCode) {
         this.errorCode = errorCode;
@@ -45,15 +47,19 @@ public class MovieException extends Exception {
     public String getMessage() {
         switch (errorCode) {
             case ERROR_1:
-                return "An error ocurred while searching for the movie by its ID ";
+                return "An error ocurred while searching for the movie by its ID.";
             case ERROR_2:
-                return "An error ocurred while searching for the movies";
+                return "An error ocurred while searching for the movies.";
             case ERROR_3:
-                return "An error ocurred while adding a new movie";
+                return "An error ocurred while adding a new movie.";
             case ERROR_4:
-                return "An error ocurred while modifying a movie";
+                return "An error ocurred while modifying a movie.";
             case ERROR_5:
-                return "An error ocurred while deleting a movie";
+                return "An error ocurred while deleting a movie.";
+            case ERROR_6:
+                return "An error ocurred while searching for a movie by genre.";
+            case ERROR_7:
+                return "An error ocurred while searching for a movie by title.";
             default:
                 return super.getMessage();
         }

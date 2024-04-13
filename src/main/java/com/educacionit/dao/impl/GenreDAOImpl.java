@@ -22,10 +22,12 @@ public class GenreDAOImpl implements GenreDAO, ConnectionDB {
         List<Genre> genres = new ArrayList<>();
         String selectQuery = "SELECT * FROM genres";
         conn = null;
+        PreparedStatement selectStatement = null;
+        ResultSet rs = null;
         try {
             conn = getConnection();
-            PreparedStatement selectStatement = conn.prepareStatement(selectQuery);
-            ResultSet rs = selectStatement.executeQuery();
+            selectStatement = conn.prepareStatement(selectQuery);
+           rs = selectStatement.executeQuery();
 
             while (rs.next()) {
                 Genre genre = new Genre();
@@ -39,16 +41,27 @@ public class GenreDAOImpl implements GenreDAO, ConnectionDB {
                     "It was not possible to displaying all the movie genres. Error: " + e.getMessage(), e);
         } finally {
             closeConnection(conn);
+            try {
+                rs.close();
+            } catch (Exception e) {
+                System.err.println("It was not possible to close the result set.");
+            }
+            try {
+                selectStatement.close();
+            } catch (Exception e) {
+                System.err.println("It was not possible to close the statement.");
+            }
         }
     }
 
     @Override
     public void addGenre(String idMovie, String genre) throws DBException, MovieException {
+        String insertQuery = "INSERT INTO genres (movie_id, genre) VALUES(?,?)";
         conn = null;
+        PreparedStatement insertStatement = null;
         try {
             conn = getConnection();
-            String insertQuery = "INSERT INTO genres (movie_id, genre) VALUES(?,?)";
-            PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
+            insertStatement = conn.prepareStatement(insertQuery);
             insertStatement.setString(1, idMovie);
             insertStatement.setString(2, genre);
             insertStatement.executeUpdate();
@@ -58,6 +71,11 @@ public class GenreDAOImpl implements GenreDAO, ConnectionDB {
                     + " to the movie with ID: " + idMovie + ". Error: " + e.getMessage(), e);
         } finally {
             closeConnection(conn);
+            try {
+                insertStatement.close();
+            } catch (Exception e) {
+                System.err.println("It was not possible to close the statement");
+            }
         }
     }
 
