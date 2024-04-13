@@ -20,35 +20,40 @@ public class MainMenu {
 
     public static void main(String[] args) throws SQLException, DBException, MovieException {
 
-        System.out.println("=== MOVIE SEARCH APP ===");
-        System.out.println("1. Search Movies ");
-        System.out.println("2. Add New Movie");
-        System.out.println("3. Update Movie");
-        System.out.println("4. Delete Movie");
-        System.out.println("5. Exit");
+        boolean exitClause = false;
 
-        System.out.println("Enter your choice: ");
-        int choice = scann.nextInt();
-        scann.nextLine();
+        while (!exitClause) {
+            System.out.println("=== MOVIE SEARCH APP ===");
+            System.out.println("1. Search Movies ");
+            System.out.println("2. Add New Movie");
+            System.out.println("3. Update Movie");
+            System.out.println("4. Delete Movie");
+            System.out.println("5. Exit");
 
-        switch (choice) {
-            case 1:
-                searchMovies();
-                break;
-            case 2:
-                addNewMovie();
-                break;
-            case 3:
-                updateMovie();
-                break;
-            case 4:
-                deleteMovie();
-                break;
-            case 5:
-                System.out.println("See you soon. Exiting......");
-                return;
-            default:
-                System.out.println("Invalid Choice! Try again.");
+            System.out.println("Enter your choice: ");
+            int choice = scann.nextInt();
+            scann.nextLine();
+
+            switch (choice) {
+                case 1:
+                    searchMovies();
+                    break;
+                case 2:
+                    addNewMovie();
+                    break;
+                case 3:
+                    updateMovie();
+                    break;
+                case 4:
+                    deleteMovie();
+                    break;
+                case 5:
+                    System.out.println("See you soon. Exiting......");
+                    exitClause = true;
+                    break;
+                default:
+                    System.out.println("Invalid Choice! Try again.");
+            }
         }
 
     }
