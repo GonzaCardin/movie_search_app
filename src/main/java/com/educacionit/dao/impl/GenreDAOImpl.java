@@ -82,21 +82,20 @@ public class GenreDAOImpl implements GenreDAO, ConnectionDB {
     @Override
     public List<String> getGenresByIdMovie(String idMovie) throws DBException, GenreException {
         List<String> genres = new ArrayList<>();
-        conn = null;
-        try {
-            conn = getConnection();
-            String selectQuery = "SELECT genre FROM genres WHERE movie_id = ?";
+        String selectQuery = "SELECT genre FROM genres WHERE movie_id =?";
+        try (Connection conn = getConnection()) {
             PreparedStatement selectStatement = conn.prepareStatement(selectQuery);
             selectStatement.setString(1, idMovie);
-            ResultSet rs = selectStatement.executeQuery();
-            while (rs.next()) {
-                genres.add(rs.getString("genre"));
+            try (ResultSet rs = selectStatement.executeQuery()) {
+                while (rs.next()) {
+                    genres.add(rs.getString("genre"));
+                }
+                return genres; 
+            } catch (SQLException e) {
+                throw new GenreException(GenreException.ERROR_4, "It was not possible to get the genres from the movie with ID: " + idMovie + ". Error: " + e.getMessage(), e);
             }
-            return genres;
         } catch (SQLException e) {
-            throw new GenreException(GenreException.ERROR_4, "It was not possible to show the genres of the movie with ID: " + idMovie+ ". Error: "+ e.getMessage(), e);
-        } finally {
-            closeConnection(conn);
+            throw new DBException(DBException.ERROR_1, e.getMessage(), e);
         }
     }
 

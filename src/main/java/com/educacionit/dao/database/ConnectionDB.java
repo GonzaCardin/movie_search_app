@@ -8,13 +8,14 @@ import com.educacionit.exceptions.DBException;
 
 public interface ConnectionDB {
     default Connection getConnection() throws DBException {
+        /*final String URL = "jdbc:mysql://localhost/films";
+        final String USER = "root";
+        final String PASSWORD = "Jacques";
+        */
 
         try {
-            final String URL = "jdbc:mysql://localhost/films";
-            final String USER = "root";
-            final String PASSWORD = "Jacques";
 
-            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/Films", "root", "Jacques");
 
             return conn;
         } catch (SQLException e) {

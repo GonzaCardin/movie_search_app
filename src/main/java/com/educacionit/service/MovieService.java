@@ -11,6 +11,8 @@ import java.util.List;
 public interface MovieService {
     Movie searchMovieById(String id) throws SQLException, DBException, MovieException;
 
+    Movie searchMovieByTitle(String tString) throws SQLException, DBException, MovieException;
+
     List<Movie> searchAllMovies() throws DBException, MovieException;
 
     String addMovie(Movie newMovie) throws DBException, MovieException;

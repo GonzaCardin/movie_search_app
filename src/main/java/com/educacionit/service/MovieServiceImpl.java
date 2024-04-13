@@ -20,6 +20,13 @@ public class MovieServiceImpl implements MovieService {
     public Movie searchMovieById(String id) throws SQLException, DBException, MovieException {
         return movieDAO.searchById(id);
     }
+    
+
+    @Override
+    public Movie searchMovieByTitle(String tString) throws SQLException, DBException, MovieException {
+        return movieDAO.searchByTitle(tString);
+    }
+
 
     @Override
     public List<Movie> searchAllMovies() throws DBException, MovieException {

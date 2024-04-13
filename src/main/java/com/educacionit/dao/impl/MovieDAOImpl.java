@@ -57,7 +57,7 @@ public class MovieDAOImpl implements MovieDAO, ConnectionDB {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public List<Movie> searchAll() throws DBException, MovieException  {
+    public List<Movie> searchAll() throws DBException, MovieException {
         String query = "SELECT m.id, m.title , m.siteUrl, m.imageUrl, g.id, g.genre FROM movies m INNER JOIN genres g ON m.id = g.movie_id";
         List<Movie> movies = new ArrayList<>();
         conn = null;
@@ -83,7 +83,8 @@ public class MovieDAOImpl implements MovieDAO, ConnectionDB {
             }
             return movies;
         } catch (SQLException e) {
-            throw new MovieException(MovieException.ERROR_2, "It was not possible to show all the movies. Error: " + e.getLocalizedMessage(), e);
+            throw new MovieException(MovieException.ERROR_2,
+                    "It was not possible to show all the movies. Error: " + e.getLocalizedMessage(), e);
         } finally {
             closeConnection(conn);
         }
@@ -114,7 +115,8 @@ public class MovieDAOImpl implements MovieDAO, ConnectionDB {
             }
             return movieId;
         } catch (SQLException e) {
-            throw new MovieException(MovieException.ERROR_3, "It was not possible to add the movie: " + newMovie.getName(), e);
+            throw new MovieException(MovieException.ERROR_3,
+                    "It was not possible to add the movie: " + newMovie.getName(), e);
         } finally {
             closeConnection(conn);
         }
@@ -147,7 +149,8 @@ public class MovieDAOImpl implements MovieDAO, ConnectionDB {
             }
 
         } catch (SQLException e) {
-            throw new MovieException(MovieException.ERROR_4, "It was not possible to modify the movie: " + movie.getName(), e);
+            throw new MovieException(MovieException.ERROR_4,
+                    "It was not possible to modify the movie: " + movie.getName(), e);
         } finally {
             closeConnection(conn);
         }
@@ -156,20 +159,23 @@ public class MovieDAOImpl implements MovieDAO, ConnectionDB {
     @Override
     public void delete(String id) throws DBException, MovieException {
         conn = null;
+        String deleteMovieQuery = "DELETE FROM movies WHERE id = ?";
+        String deleteGenresQuery = "DELETE FROM genres WHERE movie_id = ?";
+        PreparedStatement delete_m_statement;
+        PreparedStatement delete_g_statement;
         try {
             conn = getConnection();
-            String deleteMovieQuery = "DELETE FROM movies WHERE id = ?";
-            String deleteGenresQuery = "DELETE FROM genres WHERE movie_id = ?";
-            PreparedStatement delete_m_statement = conn.prepareStatement(deleteMovieQuery);
-            delete_m_statement.setString(1, id);
-            delete_m_statement.executeUpdate();
-
-            PreparedStatement delete_g_statement = conn.prepareStatement(deleteGenresQuery);
+            
+            delete_g_statement = conn.prepareStatement(deleteGenresQuery);
             delete_g_statement.setString(1, id);
             delete_g_statement.executeUpdate();
-
-        } catch (Exception e) {
-            throw new MovieException(MovieException.ERROR_5, "It was not possible to delete the movie with ID: " + id, e);
+            
+            delete_m_statement = conn.prepareStatement(deleteMovieQuery);
+            delete_m_statement.setString(1, id);
+            delete_m_statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new MovieException(MovieException.ERROR_5, "It was not possible to delete the movie with ID: " + id,
+                    e);
         } finally {
             closeConnection(conn);
         }
@@ -179,10 +185,11 @@ public class MovieDAOImpl implements MovieDAO, ConnectionDB {
     public List<Movie> searchByGenre(String genre) throws DBException, MovieException {
         conn = null;
         List<Movie> moviesByGenre = new ArrayList<>();
+        String searchByGenreQuery = "SELECT m.id, m.title, m.siteUrl, m.imageUrl FROM movies m INNER JOIN genres g ON m.id = g.movie_id WHERE g.genre = ?";
         try {
             conn = getConnection();
-            String searchByGenreQuery = "SELECT m.id, m.title, m.siteUrl, m.imageUrl FROM movies m INNER JOIN genres g ON m.id = g.movie_id WHERE g.genre = ?";
             PreparedStatement search_g_statement = conn.prepareStatement(searchByGenreQuery);
+            search_g_statement.setString(1, genre);
             ResultSet rs = search_g_statement.executeQuery();
 
             while (rs.next()) {
@@ -197,9 +204,46 @@ public class MovieDAOImpl implements MovieDAO, ConnectionDB {
             return moviesByGenre;
         } catch (SQLException e) {
             throw new MovieException(null);
-        }finally{
+        } finally {
             closeConnection(conn);
         }
+    }
+
+    @Override
+    public Movie searchByTitle(String title) throws DBException, MovieException {
+        String searchByTitleQuery = "SELECT m.id, m.title , m.siteUrl, m.imageUrl, g.id, g.genre FROM movies m INNER JOIN genres g ON m.id = g.movie_id WHERE  m.title = ?";
+        conn = null;
+        PreparedStatement search_m_statement = null;
+        ResultSet rs = null;
+        try {
+            conn = getConnection();
+            search_m_statement = conn.prepareStatement(searchByTitleQuery);
+            search_m_statement.setString(1, title);
+            rs = search_m_statement.executeQuery();
+
+            Movie movie = new Movie();
+
+            if (rs.next()) {
+                movie.setId(rs.getString("m.id"));
+                movie.setName(rs.getString("m.title"));
+                movie.setOfficialSiteUrl(rs.getString("m.siteUrl"));
+                movie.setImageUrl(rs.getString("m.imageUrl"));
+
+                List<Genre> genres = new ArrayList<>();
+                do {
+                    Genre genre = new Genre();
+                    genre.setId(rs.getInt("g.id"));
+                    genre.setName(rs.getString("g.genre"));
+                    genres.add(genre);
+                } while (rs.next());
+                movie.setGenres(genres);
+
+                return movie;
+            }
+        } catch (SQLException e) {
+            throw new DBException(null);
+        }
+        return null;
     }
     
 
