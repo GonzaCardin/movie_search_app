@@ -9,5 +9,6 @@ com\educacionit\model\Genre.class
 com\educacionit\exceptions\DBException.class
 com\educacionit\main\MainMenu.class
 com\educacionit\exceptions\GenreException.class
+com\educacionit\utils\FileManager.class
 com\educacionit\exceptions\MovieException.class
 com\educacionit\model\Movie.class
