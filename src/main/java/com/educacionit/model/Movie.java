@@ -7,14 +7,16 @@ public class Movie {
     private String name;
     private String officialSiteUrl;
     private String imageUrl;
+    private byte[] image;
     private List<Genre> genres;
 
-    public Movie(String id, String name, String officialSiteUrl, String imageUrl, List<Genre> genres) {
+    public Movie(String id, String name, String officialSiteUrl, String imageUrl,byte[] image, List<Genre> genres) {
         this.id = id;
         this.name = name;
         this.officialSiteUrl = officialSiteUrl;
         this.imageUrl = imageUrl;
         this.genres = genres;
+        this.image = image;
     }
 
     public Movie() {
@@ -59,11 +61,13 @@ public class Movie {
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
+    
+    public byte[] getImage() {
+        return image;
+    }
 
-    @Override
-    public String toString() {
-        return "Movie [id=" + id + ", name=" + name + ", officialSiteUrl=" + officialSiteUrl + ", imageUrl=" + imageUrl
-                + ", genres=" + genres + "]";
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
 }

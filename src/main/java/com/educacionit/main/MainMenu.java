@@ -1,6 +1,7 @@
 package com.educacionit.main;
 
 import java.util.Scanner;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Arrays;
@@ -13,12 +14,14 @@ import com.educacionit.model.Genre;
 import com.educacionit.model.Movie;
 import com.educacionit.service.MovieService;
 import com.educacionit.service.MovieServiceImpl;
+import com.educacionit.utils.FileManager;
 
 public class MainMenu {
     private static Scanner scann = new Scanner(System.in);
     private static MovieService mS = new MovieServiceImpl();
+    private static FileManager imageFile = new FileManager();
 
-    public static void main(String[] args) throws SQLException, DBException, MovieException {
+    public static void main(String[] args) throws SQLException, DBException, MovieException, IOException {
 
         boolean exitClause = false;
 
@@ -108,32 +111,35 @@ public class MainMenu {
 
     }
 
-    private static void addNewMovie() throws DBException, MovieException {
+    private static void addNewMovie() throws DBException, MovieException, IOException {
         System.out.println("Enter movie title: ");
         String title = scann.nextLine();
         System.out.println("Enter movie ID: ");
         String id = scann.nextLine();
         System.out.println("Enter movie site URL: ");
         String site = scann.nextLine();
-        System.out.println("Enter movie image URL: ");
+        System.out.println("Enter movie image path: ");
         String imageUrl = scann.nextLine();
-        System.out.println("Enter movie genres(separated by comma): ");
-        String genreInput = scann.nextLine();
-        List<Genre> genres = Arrays.stream(genreInput.split(","))
-                .map(genreName -> new Genre(genreName.trim()))
-                .collect(Collectors.toList());
 
-        Movie m = new Movie(id, title, site, imageUrl, genres);
-
-        try {
-            String movieId = mS.addMovie(m);
-            System.out.println("Movie added successfully with ID: " + movieId);
-        } catch (DBException | MovieException e) {
-            System.err.println("Error adding movie: " + e.getMessage());
+        if (imageFile.fileExists(imageUrl)) {
+            byte[] image = imageFile.readImage(imageUrl);
+            System.out.println("Enter movie genres(separated by comma): ");
+            String genreInput = scann.nextLine();
+            List<Genre> genres = Arrays.stream(genreInput.split(","))
+                    .map(genreName -> new Genre(genreName.trim()))
+                    .collect(Collectors.toList());
+            Movie m = new Movie(id, title, site, imageUrl, image, genres);
+            try {
+                String movieId = mS.addMovie(m);
+                System.out.println("Movie added successfully with ID: " + movieId);
+            } catch (DBException | MovieException e) {
+                System.err.println("Error adding movie: " + e.getMessage());
+            }
         }
+
     }
 
-    private static void updateMovie() throws SQLException {
+    private static void updateMovie() throws SQLException, IOException {
         System.out.println("Enter the movie ID to update: ");
         String idMovieUpd = scann.nextLine();
         try {
@@ -158,9 +164,16 @@ public class MainMenu {
                 String newSiteUrl = scann.nextLine().trim();
                 newSiteUrl = newSiteUrl.isEmpty() ? existingMovie.getOfficialSiteUrl() : newSiteUrl;
 
-                System.out.println("Image URL: ");
+                System.out.println("Image Path: ");
                 String newImageUrl = scann.nextLine().trim();
                 newImageUrl = newImageUrl.isEmpty() ? existingMovie.getImageUrl() : newImageUrl;
+                
+                byte[] newImage = null;
+                if (!newImageUrl.equals(existingMovie.getImageUrl()) && imageFile.fileExists(newImageUrl)) {
+                    newImage = imageFile.readImage(newImageUrl);
+                } else {
+                    System.out.println("Image file does not exist.");
+                }
 
                 System.out.println("Genres(separated by comma): ");
                 String genresInput = scann.nextLine();
@@ -177,6 +190,7 @@ public class MainMenu {
                 updateMovie.setName(newTitle);
                 updateMovie.setOfficialSiteUrl(newSiteUrl);
                 updateMovie.setImageUrl(newImageUrl);
+                updateMovie.setImage(newImage);
                 updateMovie.setGenres(newGenres);
 
                 mS.updateMovie(updateMovie);

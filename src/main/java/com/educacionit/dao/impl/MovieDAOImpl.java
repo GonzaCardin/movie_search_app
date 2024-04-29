@@ -115,7 +115,7 @@ public class MovieDAOImpl implements MovieDAO, ConnectionDB {
     @Override
     public String save(Movie newMovie) throws DBException, MovieException {
         String movieId = newMovie.getId();
-        String movieQuery = "INSERT INTO movies (id,title,siteURL,imageURL) VALUES (?,?,?,?)";
+        String movieQuery = "INSERT INTO movies (id,title,siteURL,imageURL,image) VALUES (?,?,?,?,?)";
         conn = null;
         PreparedStatement m_statement = null;
         PreparedStatement g_statement = null;
@@ -127,6 +127,7 @@ public class MovieDAOImpl implements MovieDAO, ConnectionDB {
             m_statement.setString(2, newMovie.getName());
             m_statement.setString(3, newMovie.getOfficialSiteUrl());
             m_statement.setString(4, newMovie.getImageUrl());
+            m_statement.setBytes(5, newMovie.getImage());
             m_statement.executeUpdate();
 
             String genreQuery = "INSERT INTO genres (movie_id,genre) VALUES (?,?)";
@@ -159,7 +160,7 @@ public class MovieDAOImpl implements MovieDAO, ConnectionDB {
     @Override
     public void update(Movie movie) throws DBException, MovieException {
         conn = null;
-        String updateQuery = "UPDATE movies SET title =?, siteURL =?, imageURL =? WHERE id =?";
+        String updateQuery = "UPDATE movies SET title =?, siteURL =?, imageURL =?, image=? WHERE id =?";
         PreparedStatement m_statement = null;
         PreparedStatement delete_g_statement = null;
         PreparedStatement insert_g_statement = null;
@@ -170,6 +171,7 @@ public class MovieDAOImpl implements MovieDAO, ConnectionDB {
             m_statement.setString(2, movie.getOfficialSiteUrl());
             m_statement.setString(3, movie.getImageUrl());
             m_statement.setString(4, movie.getId());
+            m_statement.setBytes(5, movie.getImage());
             m_statement.executeUpdate();
 
             String deleteGenreQuery = "DELETE FROM genres WHERE movie_id =?";
