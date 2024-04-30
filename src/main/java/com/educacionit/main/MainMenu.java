@@ -167,12 +167,15 @@ public class MainMenu {
                 System.out.println("Image Path: ");
                 String newImageUrl = scann.nextLine().trim();
                 newImageUrl = newImageUrl.isEmpty() ? existingMovie.getImageUrl() : newImageUrl;
+
+                byte newImage[] = existingMovie.getImage();             
                 
-                byte[] newImage = null;
-                if (!newImageUrl.equals(existingMovie.getImageUrl()) && imageFile.fileExists(newImageUrl)) {
-                    newImage = imageFile.readImage(newImageUrl);
-                } else {
-                    System.out.println("Image file does not exist.");
+                if(!newImageUrl.isEmpty()){
+                    if(imageFile.fileExists(newImageUrl)){
+                        newImage = imageFile.readImage(newImageUrl);
+                    }else{
+                        System.err.println("Image file does not exist.");
+                    }
                 }
 
                 System.out.println("Genres(separated by comma): ");
