@@ -22,17 +22,20 @@ Git: Version control system for tracking changes and collaboration.
 
 DataBase Schema	
 	--- Database Creation ---	
-Create database if not exists Films;	
-use Films;	
+        Create database if not exists Films;	
+        use Films;	
 
 --- Table movies ---		
-Create table movies(	
+
+Create table movies(	        
 	id VARCHAR(50) PRIMARY KEY,	
  	title VARCHAR(255) NOT NULL,
 	siteUrl VARCHAR(255),	
 	imagePath VARCHAR(255),	
     	image LONGBLOB	
 );	
+
+
 --- Table genres ---	
 Create table genres(	
 	id INT AUTO_INCREMENT PRIMARY KEY,	
@@ -64,7 +67,15 @@ INSERT INTO genres(movie_id, genre) VALUES
 
 
 =======
+Note: Add the movie from the console, BACK TO THE FUTURE with the following data:       
+ID: BTFF
+Title: Back To The Future
+URLSite: www.bttf.com
+ImagePath: src\main\resources\Images\Back_To_The_Future.jpg
 
+-> For the other movies, edit/modify with the image paths so that the images are loaded into the database, because I did not know how to load them with the schema.
+
+        
 Java Version        
 The project is developed using Java 17.        
 
