@@ -159,6 +159,7 @@ public class MovieDAOImpl implements MovieDAO, ConnectionDB {
 
     @Override
     public void update(Movie movie) throws DBException, MovieException {
+        
         conn = null;
         String updateQuery = "UPDATE movies SET title =?, siteURL =?, imageURL =?, image=? WHERE id =?";
         PreparedStatement m_statement = null;
@@ -170,8 +171,8 @@ public class MovieDAOImpl implements MovieDAO, ConnectionDB {
             m_statement.setString(1, movie.getName());
             m_statement.setString(2, movie.getOfficialSiteUrl());
             m_statement.setString(3, movie.getImageUrl());
-            m_statement.setString(4, movie.getId());
-            m_statement.setBytes(5, movie.getImage());
+            m_statement.setBytes(4, movie.getImage());
+            m_statement.setString(5, movie.getId());
             m_statement.executeUpdate();
 
             String deleteGenreQuery = "DELETE FROM genres WHERE movie_id =?";

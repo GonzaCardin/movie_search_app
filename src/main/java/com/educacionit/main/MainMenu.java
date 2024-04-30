@@ -187,6 +187,7 @@ public class MainMenu {
                 }
                 Movie updateMovie = new Movie();
 
+                updateMovie.setId(idMovieUpd);
                 updateMovie.setName(newTitle);
                 updateMovie.setOfficialSiteUrl(newSiteUrl);
                 updateMovie.setImageUrl(newImageUrl);
