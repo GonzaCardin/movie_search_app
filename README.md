@@ -20,47 +20,48 @@ MySQL: Database management system used to store movie data.
 JDBC (Java Database Connectivity): Java API for connecting and executing SQL queries on the MySQL database.        
 Git: Version control system for tracking changes and collaboration.        
 
+DataBase Schema	
+	--- Database Creation ---	
+Create database if not exists Films;	
+use Films;	
 
---- Database Creation ---
-Create database if not exists Films;
-use Films;
+--- Table movies ---		
+Create table movies(	
+	id VARCHAR(50) PRIMARY KEY,	
+ 	title VARCHAR(255) NOT NULL,
+	siteUrl VARCHAR(255),	
+	imagePath VARCHAR(255),	
+    	image LONGBLOB	
+);	
+--- Table genres ---	
+Create table genres(	
+	id INT AUTO_INCREMENT PRIMARY KEY,	
+    	movie_id VARCHAR(50),	
+    	genre VARCHAR(50),	
+    	FOREIGN KEY (movie_id) REFERENCES movies(id)	
+);	
+	
+--- Example Movies ---	
+INSERT INTO movies(id,title,siteUrl,imagePath,image) VALUES	
+('TDKR','Batman: The Dark Knight Rises','https://m.imdb.com/title/tt1345836/?language=en',NULL, NULL),	
+('TM','The Mummy','https://m.imdb.com/title/tt0120616/?ref_=vp_close',NULL, NULL),	
+('SWVTESB','Star Wars: Episode V - The Empire Strikes Back','https://m.imdb.com/title/tt0080684/?ref_=nv_sr_srsg_0_tt_8_nm_0_q_Star%2520Wars%2520em',NULL, NULL),	
+('IJROTLA','Raiders of the Lost Ark','https://m.imdb.com/title/tt0082971/?ref_=nv_sr_srsg_11_tt_8_nm_0_q_Indiana%2520Jones',NULL, NULL);	
+	
+--- Example Genres ---	
+INSERT INTO genres(movie_id, genre) VALUES	
+('SWVTESB','Action'),	
+('SWVTESB','Adventure'),	
+('SWVTESB', 'Fantasy'),	
+('TM','Action'),	
+('TM','Adventure'),	
+('TM', 'Fantasy'),	
+('TDKR','Action'),	
+('TDKR','Drama'),	
+('TDKR', 'Thriller'),	
+('IJROTLA','Action'),	
+('IJROTLA','Adventure');	
 
---- Table movies ---
-Create table movies(
-	id VARCHAR(50) PRIMARY KEY,
-	title VARCHAR(255) NOT NULL,
-	siteUrl VARCHAR(255),
-	imageUrl VARCHAR(255),
-    image LONGBLOB
-);
---- Table genres ---
-Create table genres(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-    movie_id VARCHAR(50),
-    genre VARCHAR(50),
-    FOREIGN KEY (movie_id) REFERENCES movies(id)
-);
-
---- Example Movies ---
-INSERT INTO movies(id,title,siteUrl,imageUrl,image) VALUES
-('TDKR','Batman: The Dark Knight Rises','https://m.imdb.com/title/tt1345836/?language=en',NULL, NULL),
-('TM','The Mummy','https://m.imdb.com/title/tt0120616/?ref_=vp_close',NULL, NULL),
-('SWVTESB','Star Wars: Episode V - The Empire Strikes Back','https://m.imdb.com/title/tt0080684/?ref_=nv_sr_srsg_0_tt_8_nm_0_q_Star%2520Wars%2520em',NULL, NULL),
-('IJROTLA','Raiders of the Lost Ark','https://m.imdb.com/title/tt0082971/?ref_=nv_sr_srsg_11_tt_8_nm_0_q_Indiana%2520Jones',NULL, NULL);
-
---- Example Genres ---
-INSERT INTO genres(movie_id, genre) VALUES
-('SWVTESB','Action'),
-('SWVTESB','Adventure'),
-('SWVTESB', 'Fantasy'),
-('TM','Action'),
-('TM','Adventure'),
-('TM', 'Fantasy'),
-('TDKR','Action'),
-('TDKR','Drama'),
-('TDKR', 'Thriller'),
-('IJROTLA','Action'),
-('IJROTLA','Adventure');
 
 =======
 
